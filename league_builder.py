@@ -1,6 +1,7 @@
 import csv
 import random
 
+
 def league_builder():
     
     def team_letter_generator(team, players, team_name):
@@ -50,51 +51,29 @@ def league_builder():
     
     # Opens CSV file and extracts info into multiple lists
     with open('soccer_players.csv', mode='r', newline='') as csv_file:
-            data = csv.DictReader(csv_file)
-            rows = list(data)
+        data = csv.DictReader(csv_file)
+        rows = list(data)
 
-            experienced_players_names = []
-            experienced_players_exp = []
-            experienced_players_guard = []
+        completed_list_of_experienced_players = []
+        completed_list_of_unexperienced_players = []
 
-            unexperienced_players_names = []
-            unexperienced_players_exp = []
-            unexperienced_players_guard = []
+        for row in rows:
+            if row['Soccer Experience'] == 'YES':
+                player_info_list = []
+                player_info_list.append(row['Name'])
+                player_info_list.append(row['Soccer Experience'])
+                player_info_list.append(row['Guardian Name(s)'])
+                completed_list_of_experienced_players.append(player_info_list)
 
-            for row in rows:
-                if row['Soccer Experience'] == 'YES':
-                    experienced_players_names.append(row['Name'])
-                    experienced_players_exp.append(row['Soccer Experience'])
-                    experienced_players_guard.append(row['Guardian Name(s)'])
-
-            for row in rows:
-                if row['Soccer Experience'] == 'NO':
-                    unexperienced_players_names.append(row['Name'])
-                    unexperienced_players_exp.append(row['Soccer Experience'])
-                    unexperienced_players_guard.append(row['Guardian Name(s)'])
+        for row in rows:
+            if row['Soccer Experience'] == 'NO':
+                player_info_list = []
+                player_info_list.append(row['Name'])
+                player_info_list.append(row['Soccer Experience'])
+                player_info_list.append(row['Guardian Name(s)'])
+                completed_list_of_unexperienced_players.append(player_info_list)
 
     
-    # Creates a list of tupples with the info gathered in the lists above. 
-    experienced_dict_value_zipper = zip(experienced_players_names, experienced_players_exp, experienced_players_guard)
-    unexperienced_dict_value_zipper = zip(unexperienced_players_names, unexperienced_players_exp, unexperienced_players_guard)
-
-
-    # Turns list into a set with all the tuples.
-    experienced_zipped_set = set(experienced_dict_value_zipper)
-    unexperienced_zipped_set = set(unexperienced_dict_value_zipper)
-
-
-    # Turns set of tuples into a list of lists.
-    completed_list_of_experienced_players = []
-    completed_list_of_unexperienced_players = []
-
-    for player in experienced_zipped_set.copy():
-        completed_list_of_experienced_players.append(list(experienced_zipped_set.pop()))
-
-    for player in unexperienced_zipped_set.copy():
-        completed_list_of_unexperienced_players.append(list(unexperienced_zipped_set.pop()))
-
-
     # Randomizes lists to generate unique teams each time the program runs.
     random.shuffle(completed_list_of_experienced_players)
     random.shuffle(completed_list_of_unexperienced_players)
@@ -161,6 +140,10 @@ def league_builder():
     for kid in raptors_team:
         raptor_names.append(kid[0])
         
+    
+    # Prints message as feedback to let the user know the program finished running. 
+    print("The team roster and parent letters have been generated successfully.")
+    
     
     # Executes functions.
     teams_list_maker()
